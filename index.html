@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicholas Iriabije — Virtual Assistant & Project Coordinator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F0E8; --surface: #FDFAF4; --ink: #1C1A14;
+    --muted: #6B6455; --accent: #2D5F4F; --accent-light: #4A8570;
+    --gold: #B8860B; --gold-light: #D4A017; --line: #D9D2C5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4rem; background: rgba(245,240,232,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--accent) !important; color: white !important; padding: 0.5rem 1.2rem; border-radius: 2px; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 5rem 4rem 4rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: linear-gradient(135deg, #E8F0ED 0%, #D4E6DF 100%); z-index: 0; }
+  .hero-text { position: relative; z-index: 1; padding-right: 4rem; }
+  .hero-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 0.35rem 0.9rem; border-radius: 2px; margin-bottom: 2rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.6s 0.2s ease forwards; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); line-height: 1.1; margin-bottom: 1.5rem; opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s 0.35s ease forwards; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s 0.5s ease forwards; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s 0.65s ease forwards; }
+
+  .btn-primary { background: var(--accent); color: white; text-decoration: none; padding: 0.85rem 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 2px; transition: background 0.25s, transform 0.2s; display: inline-block; }
+  .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+  .btn-outline { border: 1.5px solid var(--ink); color: var(--ink); text-decoration: none; padding: 0.85rem 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 2px; transition: all 0.25s; display: inline-block; }
+  .btn-outline:hover { background: var(--ink); color: white; transform: translateY(-1px); }
+  .btn-cv { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(184,134,11,0.1); border: 1.5px solid var(--gold); color: var(--gold); text-decoration: none; padding: 0.85rem 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 2px; transition: all 0.25s; cursor: pointer; }
+  .btn-cv:hover { background: var(--gold); color: white; transform: translateY(-1px); }
+  .btn-cv svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .hero-visual { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; opacity: 0; animation: fadeIn 0.9s 0.8s ease forwards; }
+  .hero-card { background: white; border-radius: 4px; padding: 2rem 2.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.08); width: 100%; max-width: 360px; border-top: 4px solid var(--accent); }
+  .hero-card-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-weight: 500; }
+  .stat-row { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+  .stat { text-align: center; flex: 1; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--accent); display: block; line-height: 1; }
+  .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; display: block; }
+  .divider-line { height: 1px; background: var(--line); margin: 1.2rem 0; }
+  .availability-badge { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; font-weight: 500; color: var(--accent); }
+  .availability-dot { width: 8px; height: 8px; background: #22C55E; border-radius: 50%; box-shadow: 0 0 0 3px rgba(34,197,94,0.25); animation: pulse 2s infinite; }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+  .section-num { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--ink); line-height: 1.15; }
+  .section-line { flex: 1; height: 1px; background: var(--line); margin-left: 1rem; }
+
+  /* SERVICES */
+  .services { background: var(--surface); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .service-card { background: white; border: 1px solid var(--line); border-radius: 4px; padding: 2.2rem; transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; }
+  .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+  .service-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.8rem; }
+  .service-card ul { list-style: none; font-size: 0.875rem; color: var(--muted); line-height: 1.9; }
+  .service-card ul li::before { content: '→ '; color: var(--accent); font-weight: 600; }
+
+  /* EXPERIENCE */
+  .timeline { position: relative; max-width: 820px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--accent), var(--line)); }
+  .timeline-item { padding-left: 3rem; padding-bottom: 3.5rem; position: relative; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot { position: absolute; left: -5px; top: 6px; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  .timeline-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .timeline-date { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); background: rgba(184,134,11,0.08); padding: 0.25rem 0.7rem; border-radius: 2px; }
+  .timeline-company { font-size: 0.8rem; color: var(--muted); }
+  .timeline-item h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 1rem; }
+  .timeline-item ul { list-style: none; font-size: 0.875rem; color: var(--muted); line-height: 2; }
+  .timeline-item ul li { display: flex; gap: 0.7rem; margin-bottom: 0.2rem; }
+  .timeline-item ul li::before { content: '◆'; color: var(--accent); font-size: 0.5rem; margin-top: 0.55rem; flex-shrink: 0; }
+
+  /* PORTFOLIO */
+  .portfolio { background: var(--ink); color: white; }
+  .portfolio .section-title { color: white; }
+  .portfolio .section-num { color: var(--gold-light); }
+  .portfolio .section-line { background: rgba(255,255,255,0.1); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .portfolio-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 2.5rem; transition: background 0.3s, transform 0.25s; position: relative; overflow: hidden; }
+  .portfolio-card::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold-light); transition: height 0.4s ease; }
+  .portfolio-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-3px); }
+  .portfolio-card:hover::after { height: 100%; }
+  .portfolio-tag { display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-light); border: 1px solid rgba(212,160,23,0.4); padding: 0.25rem 0.65rem; border-radius: 2px; margin-bottom: 1.2rem; }
+  .portfolio-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: white; margin-bottom: 0.8rem; }
+  .portfolio-card p { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.8; }
+
+  /* TOOLS */
+  .tools { background: var(--surface); }
+  .tools-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+  .tool-category h4 { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+  .tool-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip { font-size: 0.78rem; color: var(--muted); background: white; border: 1px solid var(--line); padding: 0.3rem 0.8rem; border-radius: 20px; transition: all 0.2s; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.in-progress { border-style: dashed; color: var(--gold); border-color: rgba(184,134,11,0.4); background: rgba(184,134,11,0.04); }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--ink); color: white; }
+  .testimonials .section-title { color: white; }
+  .testimonials .section-num { color: var(--gold-light); }
+  .testimonials .section-line { background: rgba(255,255,255,0.1); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .testimonial-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 2.2rem; transition: background 0.3s, transform 0.25s; }
+  .testimonial-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); }
+  .quote-mark { font-family: 'DM Serif Display', serif; font-size: 4rem; color: var(--gold-light); opacity: 0.5; line-height: 0.8; margin-bottom: 0.8rem; display: block; }
+  .testimonial-text { font-size: 0.875rem; color: rgba(255,255,255,0.72); line-height: 1.85; margin-bottom: 1.5rem; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.9rem; }
+  .author-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold)); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white; flex-shrink: 0; }
+  .author-name { font-size: 0.85rem; font-weight: 600; color: white; display: block; }
+  .author-role { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+
+  /* CONTACT */
+  .contact { background: var(--bg); text-align: center; }
+  .contact .section-header { justify-content: center; }
+  .contact .section-line { display: none; }
+  .contact-sub { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 3rem; line-height: 1.8; }
+  .contact-cards { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+  .contact-item { background: white; border: 1px solid var(--line); border-radius: 4px; padding: 1.8rem 2.5rem; text-align: center; min-width: 200px; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; color: inherit; display: block; }
+  .contact-item:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .contact-icon { font-size: 1.5rem; margin-bottom: 0.7rem; display: block; }
+  .contact-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .contact-value { font-size: 0.875rem; color: var(--accent); font-weight: 500; }
+
+  /* CONTACT FORM */
+  .contact-form-wrap { max-width: 600px; margin: 0 auto 3rem; background: white; border-radius: 4px; border: 1px solid var(--line); padding: 2.5rem; text-align: left; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .form-group input, .form-group textarea, .form-group select { border: 1.5px solid var(--line); border-radius: 2px; padding: 0.75rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--ink); background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,95,79,0.1); background: white; }
+  .form-group textarea { resize: vertical; min-height: 130px; }
+  .form-submit { width: 100%; background: var(--accent); color: white; border: none; padding: 0.95rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: background 0.25s, transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  .form-submit:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+  /* EDUCATION */
+  .education { background: var(--bg); }
+  .edu-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .edu-card { background: white; border: 1px solid var(--line); border-radius: 4px; padding: 2rem; max-width: 300px; flex: 1; min-width: 220px; }
+  .edu-card.active { border-top: 3px solid var(--accent); }
+  .edu-card.progress { border: 1px dashed var(--line); }
+  .edu-icon { font-size: 1.4rem; margin-bottom: 0.8rem; display: block; }
+  .edu-card h3 { font-family: 'DM Serif Display', serif; font-size: 1rem; margin-bottom: 0.3rem; }
+  .edu-card p { font-size: 0.8rem; color: var(--muted); }
+  .edu-card p.in-prog { color: var(--gold); }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(255,255,255,0.4); text-align: center; padding: 2rem 4rem; font-size: 0.78rem; letter-spacing: 0.08em; }
+  footer span { color: var(--gold-light); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.25); } 50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 2rem 4rem; min-height: auto; }
+    .hero::before { display: none; }
+    .hero-text { padding-right: 0; }
+    .hero-visual { padding: 3rem 0 0; }
+    section { padding: 4rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .contact-form-wrap { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Nicholas Iriabije</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-tag">Available for Remote Work</div>
+    <h1>Virtual Assistant &amp; <em>Project Coordinator</em></h1>
+    <p class="hero-sub">Detail-oriented and proactive support professional with hands-on experience in project coordination, administrative excellence, UI/UX design, and data management — helping teams deliver more with less friction.</p>
+    <div class="hero-actions">
+      <a href="#portfolio" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+      <a href="Nicholas Iriabije VA_Portfolio.docx" download="Nicholas_Iriabije_CV.docx" class="btn-cv">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CV
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hero-card-label">At a Glance</div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years Exp.</span></div>
+        <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Students Served</span></div>
+        <div class="stat"><span class="stat-num">35%</span><span class="stat-label">Engagement ↑</span></div>
+      </div>
+      <div class="divider-line"></div>
+      <div class="availability-badge"><span class="availability-dot"></span> Open to contract &amp; full-time roles</div>
+      <div class="divider-line"></div>
+      <div style="font-size:0.78rem; color:var(--muted); line-height:1.9;">📍 Ibadan, Nigeria &nbsp;·&nbsp; 🌍 Remote-First<br>Data Entry &nbsp;·&nbsp; Project Coord &nbsp;·&nbsp; Research</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Services I Offer</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">📋</span>
+      <h3>Project Coordination</h3>
+      <ul>
+        <li>Manage project timelines &amp; milestones</li>
+        <li>Track deliverables via Trello &amp; Azure DevOps</li>
+        <li>Coordinate cross-functional remote teams</li>
+        <li>Prepare status reports &amp; meeting minutes</li>
+      </ul>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">📊</span>
+      <h3>Data Entry &amp; Research</h3>
+      <ul>
+        <li>Accurate data entry &amp; database management</li>
+        <li>Internet &amp; talent research</li>
+        <li>Data cleaning and validation</li>
+        <li>Excel / Google Sheets reporting</li>
+      </ul>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">📱</span>
+      <h3>Social Media Management</h3>
+      <ul>
+        <li>Content calendar planning &amp; scheduling</li>
+        <li>Community engagement &amp; response</li>
+        <li>Performance tracking &amp; analytics</li>
+        <li>Brand consistency across platforms</li>
+      </ul>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🗂️</span>
+      <h3>Admin &amp; Scheduling</h3>
+      <ul>
+        <li>Calendar &amp; appointment management</li>
+        <li>Email triage and inbox zero</li>
+        <li>Document preparation &amp; filing</li>
+        <li>Travel coordination &amp; expense tracking</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section style="background: var(--bg);" id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Work Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-meta">
+        <span class="timeline-date">2023 – Present</span>
+        <span class="timeline-company">Sturn Design · Remote</span>
+      </div>
+      <h3>Virtual Assistant &amp; Project Coordinator</h3>
+      <ul>
+        <li>Coordinated project schedules and tracked milestones for training programs serving 100+ students</li>
+        <li>Managed social media accounts, increasing engagement by 35% through consistent content scheduling</li>
+        <li>Handled administrative tasks including calendar management, email correspondence, and report preparation</li>
+        <li>Supported website redesign project — liaising between designers and developers using Azure DevOps</li>
+        <li>Conducted research and compiled data reports to support curriculum and partnership development</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-meta">
+        <span class="timeline-date">2022 – 2023</span>
+        <span class="timeline-company">Parach ICT Academy · Ibadan, Nigeria</span>
+      </div>
+      <h3>UI/UX Design &amp; Administrative Support</h3>
+      <ul>
+        <li>Provided administrative and scheduling support to the design team across multiple client projects</li>
+        <li>Assisted in coordinating the TerraTrack Mobile App — organising feedback sessions and tracking revisions</li>
+        <li>Maintained design asset libraries and project documentation in Figma and Google Drive</li>
+        <li>Performed data entry, quality checks, and file management for client deliverables</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Portfolio Highlights</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card reveal">
+      <span class="portfolio-tag">UI/UX &amp; Project Support</span>
+      <h3>TerraTrack Mobile App</h3>
+      <p>Supported the end-to-end design lifecycle of a mobile tracking application. Coordinated design reviews, managed Figma asset libraries, and maintained project documentation across 12 sprint cycles.</p>
+    </div>
+    <div class="portfolio-card reveal">
+      <span class="portfolio-tag">Project Coordination &amp; Admin</span>
+      <h3>Parach ICT Academy Website Redesign</h3>
+      <p>Assisted in planning and executing a full website overhaul. Managed task assignments, tracked progress on Azure DevOps, and produced weekly status reports for stakeholders.</p>
+    </div>
+    <div class="portfolio-card reveal">
+      <span class="portfolio-tag">Research &amp; Data Analysis</span>
+      <h3>Muta Empowerment Initiative — Grant Research</h3>
+      <p>Led online research to identify relevant grant opportunities for a women empowerment NGO. Compiled and structured findings into a comprehensive report supporting scholarship and small business grant programs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools" id="tools">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Tools &amp; Technology</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tools-categories">
+    <div class="tool-category reveal">
+      <h4>Project Management</h4>
+      <div class="tool-chips">
+        <span class="chip">Trello</span><span class="chip">Azure DevOps</span><span class="chip">Asana</span><span class="chip">Notion</span>
+      </div>
+    </div>
+    <div class="tool-category reveal">
+      <h4>Communication &amp; Collab</h4>
+      <div class="tool-chips">
+        <span class="chip">Slack</span><span class="chip">Zoom</span><span class="chip">Microsoft Teams</span><span class="chip">Google Meet</span>
+      </div>
+    </div>
+    <div class="tool-category reveal">
+      <h4>Productivity</h4>
+      <div class="tool-chips">
+        <span class="chip">Microsoft Office Suite</span><span class="chip">Google Workspace</span><span class="chip">Google Drive</span>
+      </div>
+    </div>
+    <div class="tool-category reveal">
+      <h4>Design</h4>
+      <div class="tool-chips">
+        <span class="chip">Figma</span><span class="chip">Canva</span>
+      </div>
+    </div>
+    <div class="tool-category reveal">
+      <h4>Data &amp; Analytics</h4>
+      <div class="tool-chips">
+        <span class="chip">Excel</span><span class="chip">Google Sheets</span>
+        <span class="chip in-progress">Power BI ✦</span><span class="chip in-progress">SQL ✦</span>
+      </div>
+    </div>
+    <div class="tool-category reveal">
+      <h4>CRM &amp; Marketing</h4>
+      <div class="tool-chips">
+        <span class="chip">Mailchimp</span><span class="chip">Buffer</span>
+        <span class="chip in-progress">HubSpot CRM ✦</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:2rem; font-size:0.78rem; color:var(--muted);">
+    <span style="border:1px dashed rgba(184,134,11,0.5); color:var(--gold); padding:0.15rem 0.5rem; border-radius:10px; font-size:0.7rem;">✦ In Progress</span>
+    &nbsp; Currently expanding skill set
+  </p>
+</section>
+
+<!-- EDUCATION -->
+<section class="education" id="education">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Education &amp; Certifications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card active reveal">
+      <span class="edu-icon">🎓</span>
+      <h3>B.Agric — Agronomy</h3>
+      <p>University of Ibadan · Expected 2026</p>
+    </div>
+    <div class="edu-card reveal">
+      <span class="edu-icon">🎨</span>
+      <h3>UI/UX Design Training</h3>
+      <p>Parach ICT Academy · 2023</p>
+    </div>
+    <div class="edu-card reveal">
+      <span class="edu-icon">🤝</span>
+      <h3>Virtual Assistant Foundations</h3>
+      <p>Online Certification · 2024</p>
+    </div>
+    <div class="edu-card progress reveal">
+      <span class="edu-icon">📐</span>
+      <h3>Google Project Management Certificate</h3>
+      <p class="in-prog">In Progress · 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title">What People Say</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">Nicholas is one of the most dependable coordinators I've worked with. He kept our project timelines tight and communicated proactively — exactly what a remote team needs.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AO</div>
+        <div><span class="author-name">Amara Okonkwo</span><span class="author-role">Project Lead · Sturn Design</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">His attention to detail in data entry and research was exceptional. Nicholas helped us build a comprehensive grant report that directly supported our funding goals.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">FI</div>
+        <div><span class="author-name">Fatima Ibrahim</span><span class="author-role">Director · Muta Empowerment Initiative</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">Nicholas brought both admin discipline and design sensibility to our team. He bridged the gap between our designers and developers seamlessly throughout the TerraTrack project.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">EB</div>
+        <div><span class="author-name">Emeka Bright</span><span class="author-role">Design Manager · Parach ICT Academy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Let's Work Together</h2>
+  </div>
+  <p class="contact-sub reveal">I'm available for remote roles — contract or full-time. Whether you need a reliable VA, a detail-oriented coordinator, or a research specialist, let's connect.</p>
+
+  <div class="contact-cards reveal">
+    <a class="contact-item" href="mailto:iriabijen@gmail.com">
+      <span class="contact-icon">✉️</span>
+      <div class="contact-label">Email</div>
+      <div class="contact-value">iriabijen@gmail.com</div>
+    </a>
+    <a class="contact-item" href="https://linkedin.com/in/abije4" target="_blank">
+      <span class="contact-icon">💼</span>
+      <div class="contact-label">LinkedIn</div>
+      <div class="contact-value">linkedin.com/in/abije4</div>
+    </a>
+    <div class="contact-item">
+      <span class="contact-icon">📍</span>
+      <div class="contact-label">Location</div>
+      <div class="contact-value">Ibadan, Nigeria · Remote</div>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM — powered by Formspree -->
+  <div class="contact-form-wrap reveal">
+    <form action="PASTE_YOUR_FORMSPREE_URL_HERE" method="POST">
+      <input type="hidden" name="_subject" value="New Portfolio Enquiry — Nicholas Iriabije">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="first_name" placeholder="Jane" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="last_name" placeholder="Smith" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="femail">Email Address</label>
+        <input type="email" id="femail" name="email" placeholder="jane@company.com" required>
+      </div>
+      <div class="form-group">
+        <label for="service">Service Needed</label>
+        <select id="service" name="service">
+          <option value="" disabled selected>Select a service…</option>
+          <option>Project Coordination</option>
+          <option>Data Entry &amp; Research</option>
+          <option>Social Media Management</option>
+          <option>Admin &amp; Scheduling</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" placeholder="Tell me about your project or role…" required></textarea>
+      </div>
+      <button type="submit" class="form-submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Message
+      </button>
+    </form>
+  </div>
+
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1rem;">
+    <a href="mailto:iriabijen@gmail.com" class="btn-primary reveal">Email Me Directly</a>
+    <a href="Nicholas Iriabije VA_Portfolio.docx" download="Nicholas_Iriabije_CV.docx" class="btn-cv reveal">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download CV
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Nicholas Iriabije</span> &nbsp;·&nbsp; Virtual Assistant &amp; Project Coordinator &nbsp;·&nbsp; Ibadan, Nigeria</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.1 + 's';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
