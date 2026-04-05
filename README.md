@@ -1,2 +1,0 @@
-# portfolio
-Virtual assistant portfolio 
